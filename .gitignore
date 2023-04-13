@@ -1,0 +1,30 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.db
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Dependency directories (remove the comment below to include it)
+# vendor/
+
+.idea
+
+*.pdf
+
+*.jiff
+*.jfif
+
+*.jpg
+*.docx
+*.xlsx
+*.log
+go-practice
+
+*.mod
+*.sum
+
