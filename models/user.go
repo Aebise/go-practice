@@ -13,7 +13,7 @@ type User struct {
 	DateOfBirth time.Time `json:"date_of_birth"`
 	UserType    string    `json:"user_type"`
 	Email       string    `json:"email"`
-	Password    string    `json:"password"`
+	Password    string    `json:"-"`
 	Bio         string    `json:"bio"`
 	JobTitle    string    `json:"job_title"`
 	PhoneNumber string    `json:"phone_number"`

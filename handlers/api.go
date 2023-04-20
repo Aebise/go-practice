@@ -19,12 +19,12 @@ func SetUpRoutes() *gin.Engine {
 
 	users := r.Group("/users")
 	users.OPTIONS("", usersOptions)
-	// users.GET("", getUsers)
-	// users.POST("",addUser)
+	users.GET("", getUsers)
+	users.POST("", addUser)
 
-	// user := users.Group("/:userID")
-	// user.GET("", getUser)
-	// user.PATCH("", updateUser)
+	user := users.Group("/:userID")
+	user.GET("", getUser)
+	user.PATCH("", updateUser)
 	// user.DELETE("", deleteUser)
 
 	categories := r.Group("/categories")
