@@ -18,11 +18,11 @@ func usersOptions(c *gin.Context) {
 	c.String(http.StatusOK, "")
 }
 
-// getUsers is a handler for getting post data.
+// getUsers is a handler for getting user data.
 // It call the GetUsers function from the db package.
 // It checks for errors while reading from db.
 // It returns 500 if there is error.
-// Returns fetched posts if everything goes well.
+// Returns fetched users if everything goes well.
 func getUsers(c *gin.Context) {
 	users, err := db.GetUsers()
 	if err != nil {
@@ -47,7 +47,7 @@ func getUsers(c *gin.Context) {
 // It calls the AddUser function from the db package.
 // It checks for errors while adding to db.
 // It returns 500 if there is an arror.
-// Returns 201 if post is added.
+// Returns 201 if user is added.
 func addUser(c *gin.Context) {
 	var user models.User
 
@@ -93,6 +93,11 @@ func getUser(c *gin.Context) {
 
 }
 
+// updateUser is a handler for updating a single user data using it's id.
+// It call the UpdateUser function from the db package.
+// It checks for errors while updating on db.
+// It returns 500 if there is error.
+// Returns updated user data if everything goes well.
 func updateUser(c *gin.Context) {
 	id := c.Param("userID")
 

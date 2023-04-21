@@ -29,12 +29,12 @@ func SetUpRoutes() *gin.Engine {
 
 	categories := r.Group("/categories")
 	categories.OPTIONS("", categoriesOptions)
-	// categories.GET("", getCategories)
-	// categories.POST("", addCategory)
+	categories.GET("", getCategories)
+	categories.POST("", addCategory)
 
-	// category := categories.Group("/:categoryID")
-	// category.GET("", getCategory)
-	// category.PATCH("", updateCategory)
+	category := categories.Group("/:categoryID")
+	category.GET("", getCategory)
+	category.PATCH("", updateCategory)
 	// category.DELETE("", deleteCategory)
 
 	return r

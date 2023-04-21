@@ -95,10 +95,10 @@ func getPost(c *gin.Context) {
 }
 
 // updatePost is a handler for updating a single post data using it's id.
-// It call the GetPost function from the db package.
-// It checks for errors while reading from db.
+// It call the UpdatePost function from the db package.
+// It checks for errors while updating on db.
 // It returns 500 if there is error.
-// Returns fetched post if everything goes well.
+// Returns updated post if everything goes well.
 func updatePost(c *gin.Context) {
 	id := c.Param("postID")
 
