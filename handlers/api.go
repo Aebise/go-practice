@@ -1,12 +1,15 @@
 package handlers
 
 import (
+	"go-practice/db"
+
 	"github.com/gin-gonic/gin"
 )
 
 func SetUpRoutes() *gin.Engine {
 	r := gin.Default()
 
+	db.ConnectDB()
 	posts := r.Group("/posts")
 	posts.OPTIONS("", postsOptions)
 	posts.GET("", getPosts)
