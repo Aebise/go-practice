@@ -34,8 +34,20 @@ func GetUsers() ([]models.User, error) {
 
 func AddUser(user models.User) (models.User, error) {
 	fmt.Println(user)
-	// user.ID = "user1"
+	user.ID = primitive.NewObjectID()
 
+	ConnectDB()
+	coll := Client.Database("create-app").Collection("users")
+	insertResult, err := coll.InsertOne(Ctx, user)
+	if err != nil {
+		fmt.Println("error adding user to db: ", err)
+		return models.User{}, err
+	}
+
+	userId := insertResult.InsertedID
+	userIdObj := userId.(primitive.ObjectID)
+
+	user.ID = userIdObj
 	return user, nil
 }
 
@@ -82,5 +94,26 @@ func UpdateUser(user models.User) (models.User, error) {
 	// update the user on db
 	// return updated data
 
+	userByte, err := bson.Marshal(user)
+	if err != nil {
+		fmt.Println("Can not marshal: ", err)
+		return models.User{}, err
+	}
+
+	var update bson.M
+	err = bson.Unmarshal(userByte, &update)
+	if err != nil {
+		fmt.Println("error unmarshalling: ", err)
+		return models.User{}, err
+	}
+
+	ConnectDB()
+
+	coll := Client.Database("create-app").Collection("users")
+	_, err = coll.UpdateOne(Ctx, bson.M{"_id": user.ID}, bson.D{{Key: "$set", Value: update}})
+	if err != nil {
+		fmt.Println("error updating user: ", err)
+		return models.User{}, err
+	}
 	return user, nil
 }

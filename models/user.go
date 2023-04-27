@@ -15,7 +15,7 @@ type User struct {
 	DateOfBirth time.Time          `json:"date_of_birth" bson:"date_of_birth"`
 	UserType    string             `json:"user_type" bson:"user_type"`
 	Email       string             `json:"email" bson:"email"`
-	Password    string             `json:"-" bson:"password"`
+	Password    string             `json:"password" bson:"password"`
 	Bio         string             `json:"bio" bson:"bio"`
 	JobTitle    string             `json:"job_title" bson:"job_title"`
 	PhoneNumber string             `json:"phone_number" bson:"phone_number"`
