@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 
 	"go-practice/db"
 	"go-practice/models"
@@ -113,9 +114,15 @@ func updatePost(c *gin.Context) {
 		c.String(http.StatusBadRequest, "invalid request")
 		return
 	}
-	post.ID = id
+	objId, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		fmt.Println("error parsing ID; ", err)
+		c.String(http.StatusInternalServerError, "")
+		return
+	}
+	post.ID = objId
 
-	post, err := db.UpdatePost(post)
+	post, err = db.UpdatePost(post)
 	if err != nil {
 		fmt.Println("error updating post on db: ", err)
 		c.String(http.StatusInternalServerError, "")

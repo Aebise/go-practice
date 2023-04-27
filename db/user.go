@@ -18,14 +18,17 @@ func GetUsers() ([]models.User, error) {
 	cursor, err := coll.Find(Ctx, bson.D{})
 	if err == mongo.ErrNoDocuments {
 		fmt.Printf("No document was found")
+		return []models.User{}, err
 	}
 
 	if err != nil {
 		fmt.Println("error getting document: ", err)
+		return []models.User{}, err
 	}
 
 	if err = cursor.All(Ctx, &users); err != nil {
 		fmt.Println("error parsing:", err)
+		return []models.User{}, err
 	}
 
 	fmt.Println("users:", users)
@@ -33,7 +36,7 @@ func GetUsers() ([]models.User, error) {
 }
 
 func AddUser(user models.User) (models.User, error) {
-	fmt.Println(user)
+
 	user.ID = primitive.NewObjectID()
 
 	ConnectDB()
@@ -46,13 +49,12 @@ func AddUser(user models.User) (models.User, error) {
 
 	userId := insertResult.InsertedID
 	userIdObj := userId.(primitive.ObjectID)
-
 	user.ID = userIdObj
+
 	return user, nil
 }
 
 func GetUser(id string) (models.User, error) {
-	fmt.Println("id : ", id)
 
 	objID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
@@ -67,10 +69,12 @@ func GetUser(id string) (models.User, error) {
 	err = coll.FindOne(Ctx, bson.M{"_id": primitive.ObjectID(objID)}).Decode(&res)
 	if err == mongo.ErrNoDocuments {
 		fmt.Printf("No document was found")
+		return models.User{}, err
 	}
 
 	if err != nil {
 		fmt.Println("error getting document: ", err)
+		return models.User{}, err
 	}
 
 	bsonBytes, err := bson.Marshal(res)
@@ -90,7 +94,6 @@ func GetUser(id string) (models.User, error) {
 }
 
 func UpdateUser(user models.User) (models.User, error) {
-	fmt.Println(user)
 	// update the user on db
 	// return updated data
 
