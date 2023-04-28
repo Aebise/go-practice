@@ -114,6 +114,7 @@ func updatePost(c *gin.Context) {
 		c.String(http.StatusBadRequest, "invalid request")
 		return
 	}
+
 	objId, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		fmt.Println("error parsing ID; ", err)

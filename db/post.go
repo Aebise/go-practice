@@ -95,7 +95,6 @@ func GetPost(id string) (models.Post, error) {
 }
 
 func UpdatePost(post models.Post) (models.Post, error) {
-	fmt.Println(post)
 	// update the post on db
 	// return updated data
 
