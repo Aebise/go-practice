@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"go-practice/db"
+	"go-practice/middlewares"
 
 	"github.com/gin-gonic/gin"
 )
@@ -9,8 +9,14 @@ import (
 func SetUpRoutes() *gin.Engine {
 	r := gin.Default()
 
-	db.ConnectDB()
-	posts := r.Group("/posts")
+	api := r.Group("/api")
+	api.POST("/login", loginHandler)
+	api.POST("/users", addUser)
+
+	protected := api.Group("/protected")
+	protected.Use(middlewares.JwtAuthMiddleware())
+
+	posts := protected.Group("/posts")
 	posts.OPTIONS("", postsOptions)
 	posts.GET("", getPosts)
 	posts.POST("", addPost)
@@ -20,17 +26,16 @@ func SetUpRoutes() *gin.Engine {
 	post.PATCH("", updatePost)
 	// post.DELETE("", deletePost)
 
-	users := r.Group("/users")
+	users := protected.Group("/users")
 	users.OPTIONS("", usersOptions)
 	users.GET("", getUsers)
-	users.POST("", addUser)
 
 	user := users.Group("/:userID")
 	user.GET("", getUser)
 	user.PATCH("", updateUser)
 	// user.DELETE("", deleteUser)
 
-	categories := r.Group("/categories")
+	categories := protected.Group("/categories")
 	categories.OPTIONS("", categoriesOptions)
 	categories.GET("", getCategories)
 	categories.POST("", addCategory)

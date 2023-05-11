@@ -93,6 +93,33 @@ func GetUser(id string) (models.User, error) {
 
 }
 
+func GetUserByEmail(email string) (models.User, error) {
+	ConnectDB()
+	coll := Client.Database("create-app").Collection("users")
+	user := models.User{}
+	var res bson.M
+	err = coll.FindOne(Ctx, bson.M{"email": email}).Decode(&res)
+	if err == mongo.ErrNoDocuments {
+		fmt.Println("No document was found")
+		return models.User{}, err
+	}
+
+	bsonByte, err := bson.Marshal(res)
+	if err != nil {
+		fmt.Println("error marshalling result: ", err)
+		return models.User{}, err
+	}
+
+	if err = bson.Unmarshal(bsonByte, &user); err != nil {
+		fmt.Println("error parsing: ", err)
+		return models.User{}, err
+	}
+
+	fmt.Println("User: ", user)
+	return user, nil
+
+}
+
 func UpdateUser(user models.User) (models.User, error) {
 	// update the user on db
 	// return updated data

@@ -70,7 +70,7 @@ func GetPost(id string) (models.Post, error) {
 	var res bson.M
 	err = coll.FindOne(Ctx, bson.M{"_id": primitive.ObjectID(objId)}).Decode(&res)
 	if err == mongo.ErrNoDocuments {
-		fmt.Printf("No document was found")
+		fmt.Println("No document was found")
 		return models.Post{}, err
 	}
 
