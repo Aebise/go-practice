@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"go.mongodb.org/mongo-driver/mongo"
+	"golang.org/x/crypto/bcrypt"
 
 	"go-practice/db"
 )
@@ -28,6 +29,11 @@ func loginHandler(c *gin.Context) {
 		return
 	}
 
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+	if err != nil {
+		c.String(http.StatusUnauthorized, "")
+		return
+	}
 	// need to perform password validation
 
 	if err != nil {

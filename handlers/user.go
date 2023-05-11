@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"golang.org/x/crypto/bcrypt"
 
 	"go-practice/db"
 	"go-practice/models"
@@ -58,7 +59,16 @@ func addUser(c *gin.Context) {
 		return
 	}
 
-	user, err := db.AddUser(user)
+	password := []byte(user.Password)
+
+	hash, err := bcrypt.GenerateFromPassword(password, bcrypt.DefaultCost)
+	if err != nil {
+		fmt.Println("error generating password: ", err)
+		c.String(http.StatusInternalServerError, "")
+	}
+
+	user.Password = string(hash)
+	user, err = db.AddUser(user)
 	if err != nil {
 		fmt.Println("error adding user to db: ", err)
 		c.String(http.StatusInternalServerError, "")
