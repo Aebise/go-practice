@@ -34,7 +34,6 @@ func loginHandler(c *gin.Context) {
 		c.String(http.StatusUnauthorized, "")
 		return
 	}
-	// need to perform password validation
 
 	if err != nil {
 		c.String(http.StatusInternalServerError, "")
