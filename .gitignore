@@ -28,4 +28,4 @@ go-practice
 *.mod
 *.sum
 
-db.go
+db/db.go
